@@ -11,49 +11,57 @@
    "src": "trailer/vo_c1.mp3",
    "at": 1.5,
    "who": "Captain",
-   "line": "For a hundred years… the sea has belonged to me."
+   "line": "For a hundred years… the sea has belonged to me.",
+   "gain": 1.3
   },
   {
    "src": "trailer/vo_c2.mp3",
    "at": 9.5,
    "who": "Captain",
-   "line": "I have watched your little city grow. Bright. Loud. Fragile."
+   "line": "I have watched your little city grow. Bright. Loud. Fragile.",
+   "gain": 1.3
   },
   {
    "src": "trailer/vo_c3.mp3",
    "at": 18.0,
    "who": "Captain",
-   "line": "And all that time, I waited for someone worth the storm."
+   "line": "And all that time, I waited for someone worth the storm.",
+   "gain": 1.3
   },
   {
    "src": "trailer/vo_c4.mp3",
    "at": 25.5,
    "who": "Captain",
-   "line": "Someone who could stand against the tide. Someone who could break me."
+   "line": "Someone who could stand against the tide. Someone who could break me.",
+   "gain": 1.3
   },
   {
    "src": "trailer/vo_c5.mp3",
    "at": 44.2,
    "who": "Captain",
-   "line": "Instead… I found children in masks."
+   "line": "Instead… I found children in masks.",
+   "gain": 1.3
   },
   {
    "src": "trailer/vo_c6.mp3",
    "at": 57.0,
    "who": "Captain",
-   "line": "So tell me… will one of you finally give me a fight?"
+   "line": "So tell me… will one of you finally give me a fight?",
+   "gain": 1.9
   },
   {
    "src": "trailer/vo_s1.mp3",
    "at": 69.3,
    "who": "Shadow",
-   "line": "Oh, we will."
+   "line": "Oh, we will.",
+   "gain": 1.3
   },
   {
    "src": "trailer/vo_g1.mp3",
    "at": 73.2,
    "who": "Ghost",
-   "line": "Together."
+   "line": "Together.",
+   "gain": 1.3
   }
  ],
  "shots": [

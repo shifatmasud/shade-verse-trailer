@@ -102,9 +102,9 @@ async function play() {
   const mg = actx.createGain(); mg.gain.value = TL.music.gain; mg.connect(bus);
   T0 = actx.currentTime + 0.4;
   const m = actx.createBufferSource(); m.buffer = music; m.connect(mg); m.start(T0 + TL.music.at);
-  TL.voice.forEach((v, k) => { const src = actx.createBufferSource(); src.buffer = voices[k]; const vg = actx.createGain(); vg.gain.value = 1.15; src.connect(vg); vg.connect(bus); src.start(T0 + v.at);
+  TL.voice.forEach((v, k) => { const src = actx.createBufferSource(); src.buffer = voices[k]; const vg = actx.createGain(); vg.gain.value = v.gain || 1.15; src.connect(vg); vg.connect(bus); src.start(T0 + v.at);
     // duck the score under every line
-    const d = voices[k].duration; mg.gain.setTargetAtTime(TL.music.gain * 0.45, T0 + v.at - 0.15, 0.08); mg.gain.setTargetAtTime(TL.music.gain, T0 + v.at + d + 0.1, 0.25); });
+    const d = voices[k].duration; mg.gain.setTargetAtTime(TL.music.gain * 0.3, T0 + v.at - 0.15, 0.08); mg.gain.setTargetAtTime(TL.music.gain, T0 + v.at + d + 0.1, 0.25); });
   W0 = w.__vt.now() + 400;   // wall clock twin of T0: the picture follows real time, the music was scheduled for the same instant
   start.classList.add('tr-hide'); root.classList.add('tr-live');
   cur = -1; lastF = -1; w.__vt.start(); running = true; prevReal = performance.now ? w.__vt.now() : 0;
