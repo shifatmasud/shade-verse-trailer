@@ -1,0 +1,36 @@
+import { SKY_T } from '../shaders/skyFx';
+import { WEATHER } from '../world/env';
+import { HF_TEX, HF_BOUNDS } from './heightRefl';
+import { AR_MIN, AR_MAX, AR_COL, AR_ISLE } from './analyticRefl';
+import { IMP_P } from './impostorRefl';
+import * as THREE from 'three';
+import { seabedAt } from '../sim';
+import { islandH } from '../seaWorld';
+import { CAUSTIC_TEX, WATER_NRM } from '../caustics';
+import { TOD, UWF, WATERLINE } from '../world/env';
+import { OCEAN_VERT, OCEAN_FRAG } from './oceanShader';
+
+// Shifat 2:07 AM Oct 30 "must implement water transparency & refraction law": a baked bed map (height + sand/rock) around the island so
+// the ocean shader can trace each view ray through the surface by Snell's law (n 1.333) to the real seabed and absorb it by path length.
+// One 256x256 RGBA8 texture, built once; the shader does 3 fetches (fixed-point ray/bed intersection) instead of a second scene render.
+const BED_C = { x: 60, z: -700, h: 520 }, BED_N = 512;   /* Oct 31: widened (same ~2 m/texel) so the Farm Isle (east) and the ice island (west) get real shallows */
+const BED_TEX = (() => {
+    const d = new Uint8Array(BED_N * BED_N * 4);
+    for (let j = 0; j < BED_N; j++) for (let i = 0; i < BED_N; i++) {
+        const x = BED_C.x - BED_C.h + (i + 0.5) / BED_N * 2 * BED_C.h, z = BED_C.z - BED_C.h + (j + 0.5) / BED_N * 2 * BED_C.h;
+        const ih = islandH(x, z), y = ih !== null ? ih : seabedAt(x, z), o = (j * BED_N + i) * 4;
+        const n1 = Math.sin(x * 0.21 + z * 0.13) * Math.sin(x * 0.07 - z * 0.17);
+        d[o] = Math.round(Math.max(0, Math.min(1, (y + 30) / 40)) * 255);                                 // height -30..+10 m
+        d[o + 1] = Math.round(Math.max(0, Math.min(1, (y + 16 + n1 * 4) / 9)) * 255);                    // sand (shallow) -> rock/weed (deep)
+        d[o + 2] = Math.round((0.5 + 0.5 * n1) * 255); d[o + 3] = 255;
+    }
+    const t = new THREE.DataTexture(d, BED_N, BED_N, THREE.RGBAFormat); t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearFilter; t.wrapS = t.wrapT = THREE.ClampToEdgeWrapping; t.needsUpdate = true; return t;
+})();
+export const waterMat = new THREE.ShaderMaterial({
+    transparent: true, side: THREE.DoubleSide,
+    uniforms: { uBench: { value: new THREE.Vector2() }, uTime: { value: 0 }, uUWF: UWF, uWL: { value: WATERLINE.v }, uWLq: { value: WATERLINE.q }, uDay: TOD.day, uSun: TOD.sunU, uSky: { value: TOD.sky }, uDeep: { value: new THREE.Color('#0a6f92') }, uShallow: { value: new THREE.Color('#2fa8c4') },
+        // Shifat Oct 29 "ocean water can be upgraded like lake waters": same screen-space reflection + refraction the lake uses (OceanScreenSpace fills these)
+        uRain: WEATHER.rain, uBow: WEATHER.bow, uAur: WEATHER.aur, uFlash: WEATHER.flash, uFd: WEATHER.fdir, uSkyT: SKY_T, uHw: { value: new THREE.Vector3() }, tScene: { value: null }, tDepth: { value: null }, uBed: { value: BED_TEX }, tProbe: { value: null }, uHf: { value: HF_TEX }, uHfB: { value: HF_BOUNDS }, uHF: { value: 0 }, uArMin: { value: AR_MIN }, uArMax: { value: AR_MAX }, uArCol: { value: AR_COL }, uArIsle: { value: AR_ISLE }, tImp0: { value: null }, tImp1: { value: null }, tImp2: { value: null }, uImpP: { value: IMP_P }, uSceneTx: { value: new THREE.Vector2(0.004, 0.007) }, uFogK: { value: 0.0032 }   /* Shifat 10:02 PM 'phone & desktop sea must look exactly the same': one value for every device */, uBoat: { value: [0, 1, 2, 3, 4].map(() => new THREE.Vector4(0, 1e5, 0, 0)) }, uHeroA: { value: new THREE.Vector4(0, -999, 0, 0) }, uHeroB: { value: new THREE.Vector4(0, -999, 0, 0) }, uHeroDA: { value: new THREE.Vector4(0, 0, 0, 0) }, tMir: { value: null as THREE.Texture | null }, uMirM: { value: new THREE.Matrix4() }, uMir: { value: 0 }, uMirPx: { value: new THREE.Vector2(0.01, 0.01) }, uGrid: { value: null }, uGBox: { value: null }, uGB: { value: new THREE.Vector4() }, uGN: { value: new THREE.Vector2(1, 1) }, uUseRefl: { value: 0 }, uCaus: { value: CAUSTIC_TEX }, uNrm: { value: WATER_NRM }, uDet2: { value: 0 }, uBedC: { value: new THREE.Vector3(BED_C.x, BED_C.z, BED_C.h) }, uUseScene: { value: 0 }, uSteps: { value: 7 }, uNear: { value: 0.1 }, uFar: { value: 1000 }, uProj: { value: new THREE.Matrix4() } },
+    vertexShader: OCEAN_VERT,
+    fragmentShader: OCEAN_FRAG,
+});

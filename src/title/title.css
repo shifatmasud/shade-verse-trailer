@@ -1,0 +1,118 @@
+/* Shade Verse title, in the aesthetic of Shifat's portfolio preloader (surface-tension src/styles/app.css .intro / .odo, tokens.css):
+   black, white / silver, Inter 400 only, giant display vs tiny labels, the house eases (expo-out entrances 1 s, in-out exits),
+   masked rolls for every change. Sizes come from the title box itself (container units), landscape phone to desktop. */
+/* the sticker title's face: Anton (SIL Open Font License 1.1, (c) 2020 The Anton Project Authors, github.com/googlefonts/AntonFont),
+   subset to S H A D E V R only (3 KB, inlined by the build); see ./anton-title.LICENSE.txt */
+@font-face{font-family:'SV Anton';src:url('./anton-title.woff2') format('woff2');font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:'SV Inter';src:url('./inter-title.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:block}
+.sv-title{--ease:cubic-bezier(0.19,1,0.22,1);--ease-io:cubic-bezier(0.65,0,0.35,1);--silver:#a9adb3;--silver3:#5f646b;
+  --pad-x:max(4.2cqw,20px,env(safe-area-inset-left),env(safe-area-inset-right));--pad-y:clamp(14px,4.2cqh,34px);
+  --fs-display:clamp(44px,min(12.4cqw,24cqh),220px);--fs-small:clamp(11px,1.9cqh,12.5px);
+  position:absolute;inset:0;z-index:2;container:svt/size;overflow:hidden;background:#000;color:#fafafa;
+  font-family:'SV Inter','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-weight:400;cursor:pointer;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;will-change:transform;backface-visibility:hidden}
+.sv-title.loading{z-index:40;cursor:default}
+.sv-title.lifting{pointer-events:none}
+/* the mark: calm and centred, ~46 % of the height on desktop (it fills ~58 % of its square canvas); a short phone box gets up to 56 %
+   (at least ~230 px) so the mark still reads as the centrepiece above the name */
+.sv-logo{--ls:min(max(46cqh,min(56cqh,230px)),30cqw,400px);position:absolute;left:50%;top:41%;width:var(--ls);height:var(--ls);transform:translate(-50%,-50%);pointer-events:none;
+  opacity:0;transition:opacity .45s var(--ease-io)}
+.sv-title.in .sv-logo{opacity:1}
+/* bottom-left: the name at display size; on Play it rolls up out of its mask and the counter rolls in from below in its place */
+.sv-bl{position:absolute;left:var(--pad-x);bottom:var(--pad-y);display:grid}
+.sv-bl>.sv-mask{grid-area:1/1}
+.sv-mask{overflow:hidden;padding:.12em .1em;margin:-.12em -.1em}
+.sv-name{margin:0;font-size:var(--fs-display);font-weight:400;line-height:.86;letter-spacing:-.06em;white-space:nowrap;margin-left:-.055em;
+  transform:translate3d(0,110%,0);transition:transform .6s var(--ease-io)}
+.sv-title.in .sv-name{transform:none;transition:transform 1s var(--ease) .15s}
+.sv-title.in.loading .sv-name{transform:translate3d(0,-110%,0);transition:transform .6s var(--ease-io)}
+.sv-cmask{padding:.12em .1em 0}
+.sv-count{display:flex;align-items:flex-start;font-size:var(--fs-display);line-height:.8;letter-spacing:-.06em;font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;
+  transform:translate3d(0,115%,0);transition:transform .6s var(--ease-io)}
+.sv-title.loading .sv-count{transform:none;transition:transform 1s var(--ease) .12s}
+/* the reels (portfolio .odo): each column an overflow mask, the strip holds 0-9 three times and only translates */
+.sv-odo{display:inline-flex;height:1em;line-height:1em;clip-path:inset(0.1em -0.15em 0.135em)}
+.sv-col{display:block;position:relative;overflow:hidden;height:1em}
+.sv-strip{display:flex;flex-direction:column;will-change:transform;transform:translate3d(0,-33.333%,0)}
+.sv-strip span{display:block;height:1em;line-height:1em;text-align:center}
+/* bottom-right: tiny silver labels and Play (Swiss controls: black / white, no shadows, borders or gradients) */
+.sv-br{position:absolute;right:var(--pad-x);bottom:var(--pad-y);display:flex;flex-direction:column;align-items:flex-end;gap:clamp(6px,2.2cqh,16px)}
+.sv-meta{font-size:var(--fs-small);line-height:1.45;color:var(--silver);letter-spacing:.01em;white-space:nowrap;display:flex;align-items:center;gap:8px;
+  transform:translate3d(0,110%,0);transition:transform .6s var(--ease-io)}
+.sv-extra{color:#fafafa}
+.sv-go{display:flex;align-items:center;justify-content:center;width:clamp(48px,14cqh,72px);height:clamp(48px,14cqh,72px);border-radius:999px;border:0;padding:0;
+  background:#fafafa;color:#000;cursor:pointer;transform:translate3d(0,110%,0);transition:transform .6s var(--ease-io),background-color .24s var(--ease)}
+.sv-go svg{width:36%;height:36%;margin-left:6%}
+.sv-gomask{padding:.2em;margin:-.2em}
+.sv-title.in .sv-meta,.sv-title.in .sv-go{transform:none;transition:transform 1s var(--ease) .3s,background-color .24s var(--ease)}
+.sv-title.in.loading .sv-meta,.sv-title.in.loading .sv-go{transform:translate3d(0,-115%,0);transition:transform .6s var(--ease-io)}
+@media (hover:hover){.sv-go:hover{background:#d4d6da}}
+.sv-go:active{background:#a9adb3}
+.sv-go:focus-visible{outline:1px solid #fafafa;outline-offset:4px}
+/* very short boxes: the credit steps aside so Play keeps its thumb room */
+@container svt (max-height:300px){.sv-br .sv-mask:not(.sv-gomask){display:none}}
+/* reduced motion: every change is instant */
+.sv-title.still *,.sv-title.still{transition:none!important}
+
+/* in-game control map after the curtain (ControlMap.tsx): soft black glass, Inter, silver keys, lines roll in/out of their masks */
+.sv-cmap{position:absolute;left:max(24px,env(safe-area-inset-left));bottom:max(24px,env(safe-area-inset-bottom));z-index:5;pointer-events:none;
+  display:flex;gap:28px;padding:16px 20px 18px;border-radius:14px;background:rgba(0,0,0,.52);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.1);color:#fafafa;font-family:'SV Inter','Inter',system-ui,sans-serif;font-weight:400;font-size:12.5px;line-height:1.5;
+  max-width:calc(100% - 48px);transition:opacity .6s cubic-bezier(0.65,0,0.35,1)}
+.sv-cmap.pre{opacity:0}.sv-cmap.out{opacity:0;transition-delay:.3s}
+.sv-cmap b{display:block;font-weight:400;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#a9adb3;margin-bottom:6px}
+.sv-cmap ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.sv-cl{display:flex;gap:14px;align-items:baseline;transform:translate3d(0,110%,0);transition:transform 1s cubic-bezier(0.19,1,0.22,1) var(--d)}
+.sv-cmap.in .sv-cl{transform:none}
+.sv-cmap.out .sv-cl{transform:translate3d(0,-110%,0);transition:transform .6s cubic-bezier(0.65,0,0.35,1) calc(var(--d) * .5)}
+.sv-cmap kbd{font:inherit;min-width:104px;color:#fafafa}
+.sv-cmap .sv-cl>span{color:#a9adb3}
+.sv-cmap.still,.sv-cmap.still *{transition:none!important}
+@media (max-height:520px),(max-width:900px){.sv-cmap{gap:18px;padding:12px 14px 14px;font-size:11.5px}.sv-cmap kbd{min-width:88px}}
+@media (max-height:430px){.sv-cmap .sv-ccol+.sv-ccol{display:none}}
+
+/* first-screen header (TitleHeader.tsx), the portfolio's .header / .wordmark / quiet sound pill */
+.sv-hdr{position:absolute;top:0;left:0;right:0;z-index:4;display:flex;justify-content:space-between;align-items:center;pointer-events:none;
+  padding:max(var(--pad-y,18px),env(safe-area-inset-top)) var(--pad-x,24px) 0;font-family:'SV Inter','Inter',system-ui,sans-serif;color:#fafafa}
+.sv-hdr>*{pointer-events:auto}
+.sv-wordmark{font-weight:400;font-size:clamp(17px,1.25vw,20px);letter-spacing:-.04em;display:inline-flex;align-items:baseline;gap:1px;transition:opacity .24s cubic-bezier(0.19,1,0.22,1)}
+.sv-wordmark__mark{display:inline-block;width:1.05em;height:1.05em;align-self:center}
+.sv-wordmark__mark svg{display:block}
+/* the sound toggle = TitleButton variant 'quiet' (./TitleButton.tsx, ./titleButton.css): press is the portfolio's ink flood */
+.sv-sound{height:44px;min-width:44px;padding:0 10px;border:0;border-radius:999px;background:transparent;color:inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.sv-sound:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.sv-wave{width:22px;height:14px;display:block}
+
+/* ===== first screen: comic panels, all drawn in code (ComicTitle.tsx, PanelArt.tsx, layout.ts) ===== */
+.sv-comic{position:absolute;inset:0;z-index:3;background:#000;overflow:hidden;transition:opacity .38s cubic-bezier(0.65,0,0.35,1)}
+.sv-comic.leaving{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .38s cubic-bezier(0.65,0,0.35,1),visibility 0s linear .4s}
+.sv-comic.leaving *{animation-play-state:paused!important}
+.sv-title:not(.loading) .sv-logo,.sv-title:not(.loading) .sv-bl,.sv-title .sv-br{visibility:hidden}
+.sv-title.loading .sv-logo{transition:opacity .45s var(--ease-io) .25s}
+.sv-stage{position:absolute;left:0;top:0;transform-origin:0 0}
+.sv-push{position:absolute;inset:0;transform-origin:50% 45%;animation:sv-push 26s cubic-bezier(0.45,0,0.55,1) 1.8s infinite alternate both}
+@keyframes sv-push{from{transform:scale(1)}to{transform:scale(1.05) translate3d(0,-4px,0)}}
+.sv-art{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.sv-pg{transform-box:fill-box;transform-origin:50% 50%;animation:sv-panel-in .62s cubic-bezier(0.2,0.9,0.25,1.12) both}
+@keyframes sv-panel-in{from{opacity:0;transform:translate(var(--fx),var(--fy)) rotate(var(--fr)) scale(.86)}55%{opacity:1}to{opacity:1;transform:none}}
+@keyframes sv-float{to{transform:translate3d(0,-6px,0) rotate(-.4deg)}}
+.sv-sticker{transform-box:fill-box;transform-origin:50% 55%;animation:sv-stamp .42s cubic-bezier(0.2,1.5,0.4,1) both}
+@keyframes sv-stamp{from{opacity:0;transform:scale(1.9) rotate(-5deg)}35%{opacity:1}to{opacity:1;transform:none}}
+.sv-comic:not(.again) .sv-stage{animation:sv-thud .26s ease-out 1.54s both}
+@keyframes sv-thud{0%,100%{translate:0 0}30%{translate:0 5px}60%{translate:0 -2px}}
+.sv-play{position:absolute;z-index:60;display:flex;align-items:center;justify-content:center;border:0;padding:0;border-radius:999px;background:#fafafa;color:#000;cursor:pointer;
+  box-shadow:0 0 0 3px #000,0 8px 30px rgba(0,0,0,.6);animation:sv-play-in .55s cubic-bezier(0.19,1,0.22,1) 1.66s both}
+@keyframes sv-play-in{from{opacity:0;transform:translate3d(0,40%,0) scale(.8)}to{opacity:1;transform:none}}
+/* Play = TitleButton variant 'play': hover / press are the portfolio's ink flood (./titleButton.css, ./titleInk.ts) */
+.sv-play:focus-visible{outline:2px solid #fafafa;outline-offset:6px}
+.sv-hdr{animation:sv-fade .8s cubic-bezier(0.19,1,0.22,1) .2s both}
+@keyframes sv-fade{from{opacity:0}to{opacity:1}}
+.sv-cextra{position:absolute;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:5;font-family:'SV Inter','Inter',system-ui,sans-serif;font-size:12.5px;color:#fafafa;display:flex;gap:8px;align-items:center}
+.sv-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0}
+/* back from a game over: the art is already up, no second intro */
+.sv-comic.again *{animation-delay:0s!important}
+.sv-comic.again .sv-pg,.sv-comic.again .sv-sticker,.sv-comic.again .sv-play,.sv-comic.again .sv-hdr{animation-duration:.01s,5.5s!important}
+/* the title's own HUD pieces step aside on the first screen (the new header carries the sound toggle) */
+.stage:has(.sv-comic:not(.leaving)) .hud,.stage:has(.sv-comic:not(.leaving)) .mute{visibility:hidden}
+@media (prefers-reduced-motion:reduce){.sv-comic *,.sv-comic .sv-stage{animation:none!important;transition:none!important}}

@@ -1,0 +1,307 @@
+{
+ "fps": 24,
+ "duration": 140,
+ "music": {
+  "src": "trailer/score.mp3",
+  "at": 0,
+  "gain": 0.9
+ },
+ "voice": [
+  {
+   "src": "trailer/vo_c1.mp3",
+   "at": 1.5,
+   "who": "Captain",
+   "line": "For a hundred years… the sea has belonged to me."
+  },
+  {
+   "src": "trailer/vo_c2.mp3",
+   "at": 9.5,
+   "who": "Captain",
+   "line": "I have watched your little city grow. Bright. Loud. Fragile."
+  },
+  {
+   "src": "trailer/vo_c3.mp3",
+   "at": 18.0,
+   "who": "Captain",
+   "line": "And all that time, I waited for someone worth the storm."
+  },
+  {
+   "src": "trailer/vo_c4.mp3",
+   "at": 25.5,
+   "who": "Captain",
+   "line": "Someone who could stand against the tide. Someone who could break me."
+  },
+  {
+   "src": "trailer/vo_c5.mp3",
+   "at": 44.2,
+   "who": "Captain",
+   "line": "Instead… I found children in masks."
+  },
+  {
+   "src": "trailer/vo_c6.mp3",
+   "at": 57.0,
+   "who": "Captain",
+   "line": "So tell me… will one of you finally give me a fight?"
+  },
+  {
+   "src": "trailer/vo_s1.mp3",
+   "at": 69.3,
+   "who": "Shadow",
+   "line": "Oh, we will."
+  },
+  {
+   "src": "trailer/vo_g1.mp3",
+   "at": 73.2,
+   "who": "Ghost",
+   "line": "Together."
+  }
+ ],
+ "shots": [
+  {
+   "id": "w04_moon_sea",
+   "at": 0,
+   "dur": 8
+  },
+  {
+   "id": "a01_dawn_city",
+   "at": 8,
+   "dur": 8
+  },
+  {
+   "id": "a03_farm",
+   "at": 16,
+   "dur": 4
+  },
+  {
+   "id": "b05_street",
+   "at": 20,
+   "dur": 4
+  },
+  {
+   "id": "b02_wall",
+   "at": 24,
+   "dur": 3
+  },
+  {
+   "id": "b03_flight_sunset",
+   "at": 27,
+   "dur": 5
+  },
+  {
+   "id": "u01_kelp_day",
+   "at": 32,
+   "dur": 4
+  },
+  {
+   "id": "u03_deep",
+   "at": 36,
+   "dur": 4
+  },
+  {
+   "id": "a06_harbor_sunset",
+   "at": 40,
+   "dur": 4
+  },
+  {
+   "id": "ghost_close",
+   "at": 44,
+   "dur": 2
+  },
+  {
+   "id": "shadow_close",
+   "at": 46,
+   "dur": 2
+  },
+  {
+   "id": "w05_aurora_roof",
+   "at": 48,
+   "dur": 4
+  },
+  {
+   "id": "ice_aurora",
+   "at": 52,
+   "dur": 4
+  },
+  {
+   "id": "s2c_rise",
+   "at": 56,
+   "dur": 6
+  },
+  {
+   "id": "c11_standoff",
+   "at": 62,
+   "dur": 6
+  },
+  {
+   "id": "s5d_taunt",
+   "at": 68,
+   "dur": 3.5
+  },
+  {
+   "id": "s5f_team",
+   "at": 71.5,
+   "dur": 4.5
+  },
+  {
+   "id": "c01_combo_day",
+   "at": 76,
+   "dur": 2.5
+  },
+  {
+   "id": "c03_kick_slowmo",
+   "at": 78.5,
+   "dur": 2.5
+  },
+  {
+   "id": "s3b_ghostfight",
+   "at": 81,
+   "dur": 2.5
+  },
+  {
+   "id": "c04_webshot",
+   "at": 83.5,
+   "dur": 2
+  },
+  {
+   "id": "shock",
+   "at": 85.5,
+   "dur": 2.5
+  },
+  {
+   "id": "c05_slam",
+   "at": 88,
+   "dur": 2.5
+  },
+  {
+   "id": "c08_drone",
+   "at": 90.5,
+   "dur": 2
+  },
+  {
+   "id": "s3c_shock",
+   "at": 92.5,
+   "dur": 2.5
+  },
+  {
+   "id": "w01_rain_street",
+   "at": 95,
+   "dur": 2
+  },
+  {
+   "id": "combo_rain",
+   "at": 97,
+   "dur": 2.5
+  },
+  {
+   "id": "b04_flight_sea",
+   "at": 99.5,
+   "dur": 2.5
+  },
+  {
+   "id": "boss_fight",
+   "at": 102,
+   "dur": 3
+  },
+  {
+   "id": "s3d_bossbeam",
+   "at": 105,
+   "dur": 2.5
+  },
+  {
+   "id": "s5b_swing",
+   "at": 107.5,
+   "dur": 2.5
+  },
+  {
+   "id": "ghost_fight",
+   "at": 110,
+   "dur": 2.5
+  },
+  {
+   "id": "s5c_land",
+   "at": 112.5,
+   "dur": 2.5
+  },
+  {
+   "id": "landing",
+   "at": 115,
+   "dur": 2.5
+  },
+  {
+   "id": "boss_line",
+   "at": 117.5,
+   "dur": 3
+  },
+  {
+   "id": "s3a_combo",
+   "at": 120.5,
+   "dur": 2.5
+  },
+  {
+   "id": "c03_kick_slowmo",
+   "at": 123,
+   "dur": 2.5
+  },
+  {
+   "id": "s5e_shadowcu",
+   "at": 125.5,
+   "dur": 2.5
+  }
+ ],
+ "cards": [
+  {
+   "at": 128,
+   "dur": 4.2,
+   "kind": "title",
+   "text": "SHADE VERSE"
+  },
+  {
+   "at": 132.2,
+   "dur": 7.8,
+   "kind": "end",
+   "text": "THE TIDE IS COMING",
+   "sub": "PLAY FREE IN YOUR BROWSER",
+   "url": "shade-verse.vercel.app"
+  }
+ ],
+ "fades": [
+  {
+   "at": 0,
+   "dur": 1.6,
+   "from": 1,
+   "to": 0
+  },
+  {
+   "at": 67.5,
+   "dur": 0.5,
+   "from": 0,
+   "to": 1
+  },
+  {
+   "at": 68,
+   "dur": 0.6,
+   "from": 1,
+   "to": 0
+  },
+  {
+   "at": 75.7,
+   "dur": 0.3,
+   "from": 0,
+   "to": 1
+  },
+  {
+   "at": 127.6,
+   "dur": 0.4,
+   "from": 0,
+   "to": 1
+  }
+ ],
+ "flashes": [
+  76.0,
+  85.5,
+  92.5,
+  102.0,
+  110.0,
+  117.5
+ ]
+}
