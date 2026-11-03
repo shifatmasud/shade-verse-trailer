@@ -29,7 +29,7 @@ In the live player press **c** (or the `</> this shot` button) to read the code 
 npm install
 npm run dev            # open the page and press Play
 npm run build          # static site in dist/
-# render an MP4 from the same code (needs Chrome):
+# render an MP4 from the same code (needs Chrome + `npm i -D puppeteer-core`):
 CHROME=/path/to/chrome node scripts/render.mjs --url http://localhost:4173 --out out --w 1920 --h 1080
 node scripts/render.mjs --mux out    # -> out/trailer.mp4
 ```
