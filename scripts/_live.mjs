@@ -1,0 +1,10 @@
+import puppeteer from 'puppeteer-core';
+const b = await puppeteer.launch({ executablePath: process.env.CHROME, headless: 'new', args: ['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist','--autoplay-policy=no-user-gesture-required','--window-size=1280,720'] });
+const p = await b.newPage(); await p.setViewport({ width:1280, height:720 }); const errs=[]; p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('https://shade-verse-trailer.pages.dev/',{waitUntil:'load',timeout:120000});
+await p.waitForFunction(()=>{const b=document.querySelector('.tr-play'); return b && !b.disabled;},{timeout:300000,polling:1000});
+await p.screenshot({path:'/tmp/live0.jpg',type:'jpeg',quality:80});
+await p.click('.tr-play'); await new Promise(r=>setTimeout(r,25000));
+await p.screenshot({path:'/tmp/live1.jpg',type:'jpeg',quality:80});
+console.log(JSON.stringify({errs:errs.slice(0,3), hud: await p.evaluate(()=>document.querySelector('.tr-hud span').textContent)}));
+await b.close();

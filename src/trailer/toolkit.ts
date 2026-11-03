@@ -24,7 +24,7 @@ export function makeT() {
   T.R = { x0: -13.08, x1: 13.08, z0: -13.09, z1: 13.09 };            // the spawn rooftop
   T.rbots = (list) => { T.bots(list.map((b) => ({ ...b, y: 30 }))); const free = s.enemies.filter((e) => !e.boss); list.forEach((b, i) => { if (free[i]) free[i].roof = { ...T.R }; }); };
   T.aur = (v) => { w.__weather.aurForce = v; w.__weather.aur.value = v; };
-  T.rain = (v) => { w.__weather.force = v; };
+  T.rain = (v) => { w.__weather.force = v; if (w.__weather.rain) w.__weather.rain.value = v; };   // snap: a cut has no time for clouds to roll in
   T.lerp = (a, b, u) => a.map((x, i) => x + (b[i] - x) * u);
   T.ease = (u) => u * u * (3 - 2 * u);
   T.F = w.__F || (w.__F = { c: null });

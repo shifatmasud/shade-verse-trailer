@@ -3,7 +3,7 @@
  * SHADE VERSE: the trailer is code.
  * The director pauses the game as a game, then plays timeline.json: each shot's setup() stages the real
  * engine, step(f) drives it frame by frame, and the music and voices are scheduled on the same clock.
- * Live:   open the page, press Play. The engine renders every frame in your browser.
+ * Live:   open the page, press Play. The engine renders every frame in your browser, on the wall clock the music was scheduled against.
  * Render: ?render  exposes window.__trailer.frame(i) so scripts/render.mjs can capture an exact 24 fps MP4.
  */
 import TL from './timeline.json';
@@ -43,6 +43,7 @@ function shotIndex(t) { let i = -1; for (let k = 0; k < TL.shots.length; k++) if
 function enter(i) {
   const def = TL.shots[i], S = SHOTS[def.id]; ctx = makeT(); const { T, s, g, I } = ctx;
   w.__F = { c: null }; w.__ts = 1; w.__flashPin = 0; w.__ghostHold = false; resetInput(I);
+  T.rain(0); T.aur(0); if (w.__weather.rain) w.__weather.rain.value = 0;   // every shot starts from clear skies; the shot asks for its own weather
   S.setup(T, s, g, I);
   for (let f = -S.warm; f < 0; f++) { S.step(T, s, g, I, f, f / FPS); w.__vt.step(FRAME); }   // settle physics before the cut is seen
   cur = i; lastF = -1;
@@ -91,7 +92,7 @@ async function boot() {
 }
 
 // ---------- live playback: the music is the master clock ----------
-let actx = null, T0 = 0, prevReal = 0, running = false;
+let actx = null, T0 = 0, W0 = 0, prevReal = 0, running = false;
 async function loadBuf(src) { const r = await fetch(src); return actx.decodeAudioData(await r.arrayBuffer()); }
 async function play() {
   playBtn.disabled = true; playBtn.textContent = 'Rolling…';
@@ -104,11 +105,12 @@ async function play() {
   TL.voice.forEach((v, k) => { const src = actx.createBufferSource(); src.buffer = voices[k]; const vg = actx.createGain(); vg.gain.value = 1.15; src.connect(vg); vg.connect(bus); src.start(T0 + v.at);
     // duck the score under every line
     const d = voices[k].duration; mg.gain.setTargetAtTime(TL.music.gain * 0.45, T0 + v.at - 0.15, 0.08); mg.gain.setTargetAtTime(TL.music.gain, T0 + v.at + d + 0.1, 0.25); });
+  W0 = w.__vt.now() + 400;   // wall clock twin of T0: the picture follows real time, the music was scheduled for the same instant
   start.classList.add('tr-hide'); root.classList.add('tr-live');
   cur = -1; lastF = -1; w.__vt.start(); running = true; prevReal = performance.now ? w.__vt.now() : 0;
   const loop = () => {
     if (!running) return;
-    const t = actx.currentTime - T0, now = w.__vt.now(); const dt = Math.min(100, Math.max(1, now - prevReal)); prevReal = now;
+    const now = w.__vt.now(), t = (now - W0) / 1000; const dt = Math.min(100, Math.max(1, now - prevReal)); prevReal = now;
     if (t >= 0) tick(Math.min(t, TL.duration), dt); else { w.__vt.step(dt); overlays(0); }
     if (t >= TL.duration) { running = false; start.classList.remove('tr-hide'); playBtn.disabled = false; playBtn.textContent = '↺  Play again'; root.classList.remove('tr-live'); return; }
     w.__vt.raf(loop);
